@@ -1,6 +1,5 @@
 # cnn-transfer-learning
 Intel Image Classification using CNN Transfer Learning with MobileNetV2. Feature extraction + fine-tuning, 93.5% accuracy on 6 classes (buildings, forest, glacier, mountain, sea, street). Kaggle notebook with augmentation, confusion matrix &amp; accuracy plots.
-
 ## Project 2, Week 5: Scene Classification with Transfer Learning
 
 - **Dataset:** Intel Image Classification; 6 classes; 14,034 training images and 3,000 test images.
@@ -13,3 +12,4 @@ Intel Image Classification using CNN Transfer Learning with MobileNetV2. Feature
 - **Task 1.2 prediction:** Correctly anticipated that glacier and mountain images could be confused because of similar snow, ice, rocks, and terrain.
 - **Other notable confusion:** Buildings and street, including 37 buildings images predicted as street according to the analysis.
 - **Next — Week 6:** Explore transfer learning for plant disease classification using a labeled crop-leaf image dataset.
+## Kaggle Notebook:https://www.kaggle.com/code/fatimaakhtar123/week1-cnn-intel-classification
