@@ -11,5 +11,6 @@ Intel Image Classification using CNN Transfer Learning with MobileNetV2. Feature
 - **Most-confused pair:** Glacier and mountain. According to the confusion-matrix analysis, 56 glacier images were predicted as mountain, while 30 mountain images were predicted as glacier.
 - **Task 1.2 prediction:** Correctly anticipated that glacier and mountain images could be confused because of similar snow, ice, rocks, and terrain.
 - **Other notable confusion:** Buildings and street, including 37 buildings images predicted as street according to the analysis.
-- **Next — Week 6:** Explore transfer learning for plant disease classification using a labeled crop-leaf image dataset.
+- - **Next — Week 6:** Explore deep learning for skin-lesion image classification using a labeled medical image dataset, with the goal of distinguishing between different types of skin conditions.
+- **Dataset link:** [HAM10000 — Skin Cancer MNIST](https://www.kaggle.com/datasets/kmader/skin-cancer-mnist-ham10000)
 ## Kaggle Notebook:https://www.kaggle.com/code/fatimaakhtar123/week1-cnn-intel-classification
