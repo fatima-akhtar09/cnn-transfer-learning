@@ -27,7 +27,7 @@ Intel Image Classification using CNN Transfer Learning with MobileNetV2. Feature
 
 **Model and imbalance handling:** Pretrained ResNet18 with an ImageNet initialization and a seven-class classification head. The training procedure used weighted cross-entropy loss, with balanced sampling disabled. Class weights: `akiec = 4.382`, `bcc = 2.770`, `bkl = 1.293`, `df = 12.152`, `mel = 1.334`, `nv = 0.212`, and `vasc = 11.252`.
 
-**Results (held-out test set, evaluated once):** Accuracy: **0.745**; Macro-F1: **0.561**; weighted F1: **0.760**. Per-class recall: `akiec = 0.706`, `bcc = 0.730`, `bkl = 0.585`, `df = 0.227`, `mel = 0.563`, `nv = 0.811`, and `vasc = 0.706`. The weakest class by F1 was `df` at **0.286**, while `nv` achieved the highest F1 at **0.871**. Binary threshold selection was not applicable to the seven-class task.
+**Results (held-out test set):** Accuracy: **0.745**; Macro-F1: **0.561**; weighted F1: **0.760**. Per-class recall: `akiec = 0.706`, `bcc = 0.730`, `bkl = 0.585`, `df = 0.227`, `mel = 0.563`, `nv = 0.811`, and `vasc = 0.706`. The weakest class by F1 was `df` at **0.286**, while `nv` achieved the highest F1 at **0.871**. Binary threshold selection was not applicable to the seven-class task.
 
 **Grad-CAM:** Six test examples from the `bkl` class were inspected: three correct predictions and three misclassifications. Correct predictions generally showed attention around the lesion, while some incorrect predictions showed ring-shaped, diffuse, or separated attention regions. **Shortcut risk: suspected, not confirmed.** A proposed follow-up experiment is to mask or crop surrounding skin and compare predictions and performance with the original images.
 
