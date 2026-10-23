@@ -34,6 +34,32 @@ Intel Image Classification using CNN Transfer Learning with MobileNetV2. Feature
 **Limitations:** The dataset contains multi-source dermatoscopic images and has substantial class imbalance. The split prevents lesion-level leakage, but not necessarily patient-level leakage. Only six Grad-CAM examples were inspected, all from one class, and no independent external validation was performed.
 
 **Not for:** Clinical diagnosis, treatment decisions, or unsupervised real-world skin cancer screening. This is an educational model and has not been clinically validated.
+## Detailed Test Classification Report
+
+The following table summarizes the model's performance on the held-out test set of 2,014 images.
+
+| Class | Precision | Recall | F1-score | Support |
+|---|---:|---:|---:|---:|
+| `akiec` | 0.429 | 0.706 | 0.533 | 68 |
+| `bcc` | 0.420 | 0.730 | 0.533 | 100 |
+| `bkl` | 0.504 | 0.585 | 0.542 | 205 |
+| `df` | 0.385 | 0.227 | 0.286 | 22 |
+| `mel` | 0.483 | 0.563 | 0.520 | 222 |
+| `nv` | 0.940 | 0.811 | 0.871 | 1,363 |
+| `vasc` | 0.585 | 0.706 | 0.640 | 34 |
+| **Accuracy** | — | — | **0.745** | **2,014** |
+| **Macro average** | **0.535** | **0.618** | **0.561** | **2,014** |
+| **Weighted average** | **0.790** | **0.745** | **0.760** | **2,014** |
+
+**Metric interpretation:**
+- **Precision:** How often predictions for a class were correct.
+- **Recall:** The proportion of actual examples of a class correctly identified.
+- **F1-score:** The harmonic mean of precision and recall.
+- **Support:** The number of actual test examples belonging to each class.
+
+**Key observation:** The `nv` class achieved the highest F1-score (0.871), while `df` had the lowest (0.286). The `df` recall of 0.227 indicates that the model missed many examples of this class. Overall accuracy alone therefore does not fully represent performance across all seven classes.
+
+*These results are from an educational research model and do not establish clinical suitability for diagnosing skin lesions.*
 
 ### Responsible AI Reflection
 
