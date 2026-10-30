@@ -210,3 +210,4 @@ Masking before extraction helps prevent sensitive personal information from appe
 - Conduct further testing before considering any clinical application.
 
 **Disclaimer:** This project is an educational decision-support demonstration. Model predictions are not medical diagnoses and must not replace assessment by qualified healthcare professionals.
+**Note:** All numerical results in this README are based on the outputs recorded during my Week 7 experiments. The OCR result (CER = 0.000) was obtained using a clean, synthetic invoice and may differ when processing real-world documents. The multimodal pipeline's `ROUTINE` decision is a rule-based output, not a clinical assessment. The text extractor also incorrectly classified the phrase "the past two months" as a DATE entity, although it represents a duration. The model is intended for educational decision-support purposes only and must not replace evaluation by a qualified healthcare professional.
