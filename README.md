@@ -78,3 +78,135 @@ A qualified dermatologist must remain responsible for clinical assessment and di
 **4. What evidence would change your conclusions?**
 
 I would evaluate the model on independent datasets from different clinical settings and populations, examine performance across all seven classes, and assess sensitivity, specificity, calibration, and clinically important errors. I would also test the suspected shortcut-learning risk by masking or cropping surrounding skin and comparing predictions against the original images. Consistent external performance, improved detection of underperforming classes, and evidence that predictions rely on relevant lesion features would strengthen confidence in the model—but clinical use would still require appropriate clinical validation.
+
+# Week 7: Text and Multimodal AI
+
+## Project Overview
+
+This project explores Natural Language Processing (NLP), Named Entity Recognition (NER), Regular Expressions, Optical Character Recognition (OCR), and Multimodal AI.
+
+The domain-specific application focuses on **Healthcare and Medical AI — Medical Imaging and Dermatology**.
+
+## 1. Text Classification — SMS Spam Detection
+
+**Dataset:** SMS Spam Collection Dataset (UCI)  
+**Total messages:** 5,572
+
+I trained two TF-IDF-based Logistic Regression classifiers using word and character n-grams.
+
+| Model | Macro-F1 |
+|---|---:|
+| Word TF-IDF | 0.974 |
+| Character n-grams | 0.982 |
+
+Character n-grams performed slightly better than word n-grams.
+
+**Top spam-associated features:** `call`, `txt`, `free`, `text`, `reply`, `uk`, `www`, `mobile`, `claim`, `stop`.
+
+**Top ham-associated features:** `my`, `me`, `ok`, `that`, `it`, `but`, `ll`, `gt`, `lt`, `can`.
+
+## 2. Named Entity Recognition (NER)
+
+I evaluated spaCy's pre-trained NER model and improved it using Entity Ruler patterns.
+
+### Original Pakistani Sample Sentences
+
+| Metric | Before Entity Ruler | After Entity Ruler |
+|---|---:|---:|
+| Precision | 0.571 | 0.875 |
+| Recall | 0.500 | 0.875 |
+| F1-score | 0.533 | 0.875 |
+
+### Healthcare and Medical AI Domain
+
+The medical-domain evaluation used five development sentences and five held-out test sentences.
+
+| Metric | Before Entity Ruler | After Entity Ruler |
+|---|---:|---:|
+| Precision | 0.500 | 0.500 |
+| Recall | 0.500 | 0.500 |
+| F1-score | 0.500 | 0.500 |
+
+The medical-domain rules did not improve performance on the held-out sentences. Remaining challenges included recognizing disease names, dataset names, and complete monetary expressions.
+
+## 3. Regular Expression Extraction
+
+Developed domain-specific patterns for extracting:
+
+- Patient IDs
+- Medical record numbers
+- Laboratory values
+- ICD-10 diagnosis codes
+- Medical imaging IDs
+- CNIC numbers
+- Mobile numbers
+- Monetary amounts
+- Dates
+- Email addresses
+- Invoice numbers
+
+### Test Results
+
+| Test category | Passed | Total |
+|---|---:|---:|
+| Positive tests | 12 | 12 |
+| Negative tests | 8 | 8 |
+| **Overall** | **20** | **20** |
+
+All 20 tests passed. Invalid formats and unrelated information were correctly ignored.
+
+## 4. OCR and Character Error Rate (CER)
+
+Used EasyOCR to extract text from a synthetic invoice and applied context-based OCR correction rules.
+
+| Evaluation | CER |
+|---|---:|
+| Raw OCR | 0.000 (0%) |
+| After correction rules | 0.000 (0%) |
+
+The synthetic invoice was recognized correctly without requiring additional corrections. Real phone photographs may produce higher CER due to blur, lighting, shadows, and perspective distortion.
+
+## 5. Image + Text Multimodal Pipeline
+
+Integrated my previously trained **ResNet18 HAM10000 skin-lesion classifier** with text evidence extraction to generate a structured JSON case record.
+
+### Example Case Record
+
+| Field | Result |
+|---|---|
+| Image | ISIC_0029306.jpg |
+| Predicted class | nv |
+| nv probability | 98.3% |
+| Melanoma (mel) probability | 0.8% |
+| Extracted entities | 1 DATE |
+| Urgent terms | None detected |
+| Final system decision | ROUTINE |
+
+The pipeline combines image probabilities, extracted text entities, structured fields, and decision reasons into a JSON record.
+
+The example demonstrates how image and text evidence can be brought together in one transparent case record.
+
+## 6. Privacy Protection
+
+Implemented Personally Identifiable Information (PII) masking before text extraction and case-record generation.
+
+| Personal identifier | Masking result |
+|---|---|
+| CNIC | Successful |
+| Mobile number | Successful |
+| Email address | Successful |
+
+All three sample privacy checks returned `NOT FOUND` in the generated JSON output.
+
+Masking before extraction helps prevent sensitive personal information from appearing in extracted evidence or shared records.
+
+## 7. Limitations and Future Improvements
+
+- Improve medical-domain NER using more representative annotated data.
+- Add dermatology-specific warning terms to the text evidence component.
+- Improve recognition of disease names, medical datasets, and laboratory terminology.
+- Evaluate OCR on real photographed medical documents.
+- Improve the multimodal decision logic to flag disagreements between image predictions and clinical notes.
+- Conduct further testing before considering any clinical application.
+
+**Disclaimer:** This project is an educational decision-support demonstration. Model predictions are not medical diagnoses and must not replace assessment by qualified healthcare professionals.
