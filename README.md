@@ -342,6 +342,13 @@ The API key is kept private and is not stored in this repository.
 
 The API currently runs locally and is not publicly deployed.
 
+## Trained Model File
+
+The trained Week 6 model ("week6_model.pt") is hosted on Google Drive because of GitHub's browser upload size limit.
+
+"Download week6_model.pt" (https://drive.google.com/file/d/1iKg7tB2TwU1TQo7yVIMg9QdjoNSf7Y7A/view?usp=sharing)
+
+After downloading, place "week6_model.pt" in the same directory as "app.py" before running the API.
 ## Conclusion
 
 The Week 6 skin lesion classification model was successfully integrated into a FastAPI application. All eight automated tests passed, manual endpoint testing was successful, and the latency benchmark was completed. API-key authentication and input validation were also tested successfully.
