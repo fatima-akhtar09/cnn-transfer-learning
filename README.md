@@ -336,8 +336,7 @@ The API key is kept private and is not stored in this repository.
 
 ## API Documentation
 
-- **Local API:** http://127.0.0.1:8000/docs
-- **Swagger Documentation:** http://127.0.0.1:8000/docs
+- **Local API & Swagger Documentation::** http://127.0.0.1:8000/docs
 - **Health Check:** http://127.0.0.1:8000/docs#/default/health_health_get
 
 The API currently runs locally and is not publicly deployed.
