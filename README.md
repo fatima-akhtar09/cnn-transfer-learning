@@ -384,6 +384,8 @@ Patient reports bleeding. Contact number 03001234567. CNIC 3520212345671.
 ```
 
 Both phone number and CNIC masking were successfully verified. The API also detected the urgent term and returned the `REFER` decision.
+<img width="1416" height="867" alt="image" src="https://github.com/user-attachments/assets/6cea31e2-0c73-4858-9403-cecc21b11089" />
+
 
 ## API Key Authentication
 
