@@ -211,3 +211,136 @@ Masking before extraction helps prevent sensitive personal information from appe
 
 **Disclaimer:** This project is an educational decision-support demonstration. Model predictions are not medical diagnoses and must not replace assessment by qualified healthcare professionals.
 **Note:** All numerical results in this README are based on the outputs recorded during my Week 7 experiments. The OCR result (CER = 0.000) was obtained using a clean, synthetic invoice and may differ when processing real-world documents. The multimodal pipeline's `ROUTINE` decision is a rule-based output, not a clinical assessment. The text extractor also incorrectly classified the phrase "the past two months" as a DATE entity, although it represents a duration. The model is intended for educational decision-support purposes only and must not replace evaluation by a qualified healthcare professional.
+
+# Week 8 – FastAPI Model Deployment
+
+## Project Overview
+
+This project converts my Week 6 skin lesion classification model into a web service using FastAPI. The API loads the trained model and provides image prediction, health-check, and text-based case analysis endpoints.
+
+The service includes input validation, error handling, PII masking, and API-key authentication.
+
+## Project Files
+
+| File | Description |
+|---|---|
+| `app.py` | FastAPI application with `/health`, `/predict`, and `/analyze` endpoints |
+| `test_api.py` | Automated tests for API functionality and input validation |
+| `bench.py` | Latency benchmarking script |
+| `week6_model.pt` | Trained Week 6 model |
+| `sample.jpeg` | Sample image used for API testing |
+
+## API Endpoints
+
+### 1. GET `/health`
+Checks whether the API is running and the model has loaded successfully.
+
+### 2. POST `/predict`
+Accepts a JPEG or PNG image and returns the predicted class, class probabilities, and inference latency.
+
+### 3. POST `/analyze`
+Accepts an image and a text note. Returns the prediction, masked note, extracted information, and urgency-related information.
+
+## Automated Testing
+
+Command executed:
+
+```bash
+pytest -q test_api.py
+```
+
+Actual test output:
+
+```text
+........ [100%]
+
+8 passed, 1 warning in 35.81s
+```
+
+All eight automated tests passed successfully.
+
+The tests covered:
+- Health endpoint and model loading
+- Prediction response schema and probability validation
+- Prediction parity with the directly loaded model
+- Unsupported file type rejection
+- Oversized file rejection
+- Corrupted image rejection
+- Missing file handling
+- PII masking and urgency decision
+
+## Latency Benchmark
+
+The API was tested using 50 consecutive requests on one worker.
+
+| Metric | Actual Result |
+|---|---:|
+| Total requests | 50 |
+| p50 latency | 228 ms |
+| p95 latency | 466 ms |
+| Maximum latency | 1,258 ms |
+| Throughput | 3.6 requests/second |
+
+## Hardware Specifications
+
+- **CPU:** 13th Gen Intel(R) Core(TM) i3-1305U
+- **RAM:** 8 GB
+- **Operating System:** Windows
+- **Execution:** CPU-based PyTorch
+
+## Little's Law Calculation
+
+Little's Law:
+
+\[
+L = \lambda W
+\]
+
+At a p50 latency of 228 ms:
+
+Theoretical throughput:
+
+\[
+\lambda = \frac{1}{0.228} \approx 4.39
+\]
+
+Theoretical daily request capacity:
+
+\[
+4.39 \times 86,400 \approx 378,947
+\]
+
+Therefore, one worker could theoretically handle approximately **378,947 requests per day** at p50 latency under continuous operation, assuming one request in service at a time.
+
+Based on the measured throughput of 3.6 requests per second:
+
+\[
+3.6 \times 86,400 = 311,040
+\]
+
+This gives a measured-throughput daily equivalent of approximately **311,040 requests**, assuming continuous operation. Actual capacity depends on workload and system conditions.
+
+## Additional Invalid Input Test
+
+I tested the `/predict` endpoint by uploading `app.py` with the content type `text/plain`.
+
+**Actual response:**
+- HTTP status: `415 Unsupported Media Type`
+- Response message: `Upload a JPEG or PNG image`
+
+This confirmed that the API rejects unsupported file types.
+
+## API Key Authentication
+
+I enabled API-key authentication and tested both cases:
+
+| Test | Result |
+|---|---|
+| Request without API key | 401 Unauthorized |
+| Request with valid API key | 200 OK |
+
+The API key is kept private and is not stored in this repository.
+
+## Conclusion
+
+The Week 6 skin lesion classification model was successfully integrated into a FastAPI application. All eight automated tests passed, manual endpoint testing was successful, and the latency benchmark was completed. API-key authentication and input validation were also tested successfully.
