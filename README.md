@@ -319,7 +319,6 @@ Based on the measured throughput of 3.6 requests/second:
 3.6 × 86,400 = **311,040 requests/day**
 
 This is the measured-throughput daily equivalent, assuming continuous operation. Actual capacity depends on workload and system conditions.
-<img width="594" height="672" alt="Screenshot 2026-11-05 233307" src="https://github.com/user-attachments/assets/bfa58c13-dd3b-42e3-8700-62cd62259394" />
 
 
 ## Additional Invalid Input Tests
@@ -347,8 +346,20 @@ I created a temporary 6 MB test file named `oversized.jpg` and uploaded it to th
 - Response message: `Image larger than 5 MB`
 
 This confirmed that the API rejects files exceeding the 5 MB upload limit.
-<img width="594" height="672" alt="image" src="https://github.com/user-attachments/assets/e521f828-b0a1-4c1e-8667-e185a71ed8a8" />
+<img width="1418" height="871" alt="image" src="https://github.com/user-attachments/assets/3af0c2b9-5a72-4049-b5a9-ed37e6759323" />
 
+### Successful Prediction – HTTP 200
+
+I tested the `/predict` endpoint using `sample.jpeg`.
+
+**Actual response:**
+
+- HTTP status: `200 OK`
+- Predicted class: `nv`
+- Inference latency: `422.9 ms`
+
+This confirmed that the API successfully accepts a valid image and returns its prediction and class probabilities.
+<img width="1416" height="867" alt="image" src="https://github.com/user-attachments/assets/5bb142c5-dabc-4a7d-ab68-a019dd33d1df" />
 
 ## PII Masking and Urgency Detection
 
