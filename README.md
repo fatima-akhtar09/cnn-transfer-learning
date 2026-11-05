@@ -334,6 +334,8 @@ I tested the `/predict` endpoint by uploading `app.py` with the content type `te
 - Response message: `Upload a JPEG or PNG image`
 
 This confirmed that the API rejects unsupported file types.
+<img width="1419" height="863" alt="image" src="https://github.com/user-attachments/assets/954495ac-ab49-4724-9c56-a62eb256fe1b" />
+
 
 ### HTTP 413 – Oversized File
 
