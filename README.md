@@ -397,6 +397,16 @@ I enabled API-key authentication and tested both cases:
 | Request with valid API key | 200 OK |
 
 The API key is kept private and is not stored in this repository.
+**API Authentication Testing Screenshots:**
+
+#### Request without API Key – HTTP 401
+
+![Unauthorized request]<img width="1415" height="842" alt="image" src="https://github.com/user-attachments/assets/d703dc13-82d6-42ea-8663-dd05199567ba" />
+
+
+#### Request with Valid API Key – HTTP 200
+
+![Authorized request]<img width="1389" height="850" alt="image" src="https://github.com/user-attachments/assets/427505db-c8a3-47df-b1f9-1f070c7b3922" />
 
 ## API Documentation
 
