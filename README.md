@@ -212,7 +212,7 @@ Masking before extraction helps prevent sensitive personal information from appe
 **Disclaimer:** This project is an educational decision-support demonstration. Model predictions are not medical diagnoses and must not replace assessment by qualified healthcare professionals.
 **Note:** All numerical results in this README are based on the outputs recorded during my Week 7 experiments. The OCR result (CER = 0.000) was obtained using a clean, synthetic invoice and may differ when processing real-world documents. The multimodal pipeline's `ROUTINE` decision is a rule-based output, not a clinical assessment. The text extractor also incorrectly classified the phrase "the past two months" as a DATE entity, although it represents a duration. The model is intended for educational decision-support purposes only and must not replace evaluation by a qualified healthcare professional.
 
-# Week 8 – FastAPI Model Deployment
+ # Week 8 – FastAPI Model Deployment
 
 ## Project Overview
 
@@ -227,18 +227,23 @@ The service includes input validation, error handling, PII masking, and API-key 
 | `app.py` | FastAPI application with `/health`, `/predict`, and `/analyze` endpoints |
 | `test_api.py` | Automated tests for API functionality and input validation |
 | `bench.py` | Latency benchmarking script |
-| `week6_model.pt` | Trained Week 6 model |
 | `sample.jpeg` | Sample image used for API testing |
+| `week6_model.pt` | Trained Week 6 model, required locally but not included in GitHub due to file size |
+
+**Note:** Place `week6_model.pt` in the same directory as `app.py` before running the API.
 
 ## API Endpoints
 
 ### 1. GET `/health`
+
 Checks whether the API is running and the model has loaded successfully.
 
 ### 2. POST `/predict`
+
 Accepts a JPEG or PNG image and returns the predicted class, class probabilities, and inference latency.
 
 ### 3. POST `/analyze`
+
 Accepts an image and a text note. Returns the prediction, masked note, extracted information, and urgency-related information.
 
 ## Automated Testing
@@ -260,6 +265,7 @@ Actual test output:
 All eight automated tests passed successfully.
 
 The tests covered:
+
 - Health endpoint and model loading
 - Prediction response schema and probability validation
 - Prediction parity with the directly loaded model
@@ -268,6 +274,8 @@ The tests covered:
 - Corrupted image rejection
 - Missing file handling
 - PII masking and urgency decision
+
+The warning was a Starlette deprecation warning and did not cause any test failures.
 
 ## Latency Benchmark
 
@@ -288,7 +296,7 @@ The API was tested using 50 consecutive requests on one worker.
 - **Operating System:** Windows
 - **Execution:** CPU-based PyTorch
 
- ## Little's Law Calculation
+## Little's Law Calculation
 
 Little's Law:
 
@@ -304,24 +312,61 @@ At a p50 latency of 228 ms (0.228 seconds):
 
 4.39 × 86,400 = approximately **378,947 requests/day**
 
-Therefore, one worker could theoretically handle approximately 378,947 requests per day at p50 latency under continuous operation, assuming one request in service at a time.
+This is an idealized estimate based on p50 latency, not a guaranteed capacity measurement.
 
 Based on the measured throughput of 3.6 requests/second:
 
 3.6 × 86,400 = **311,040 requests/day**
 
 This is the measured-throughput daily equivalent, assuming continuous operation. Actual capacity depends on workload and system conditions.
- 
 
-## Additional Invalid Input Test
+## Additional Invalid Input Tests
+
+### HTTP 415 – Unsupported Media Type
 
 I tested the `/predict` endpoint by uploading `app.py` with the content type `text/plain`.
 
 **Actual response:**
+
 - HTTP status: `415 Unsupported Media Type`
 - Response message: `Upload a JPEG or PNG image`
 
 This confirmed that the API rejects unsupported file types.
+
+### HTTP 413 – Oversized File
+
+I created a temporary 6 MB test file named `oversized.jpg` and uploaded it to the `/predict` endpoint.
+
+**Actual response:**
+
+- HTTP status: `413 Request Entity Too Large`
+- Response message: `Image larger than 5 MB`
+
+This confirmed that the API rejects files exceeding the 5 MB upload limit.
+
+## PII Masking and Urgency Detection
+
+I tested the `/analyze` endpoint using a synthetic note containing a phone number, a CNIC, and an urgent keyword.
+
+**Synthetic test note:**
+
+```text
+Patient reports bleeding. Contact number 03001234567. CNIC 3520212345671.
+```
+
+**Actual response:**
+
+```json
+{
+  "note_masked": "Patient reports bleeding. Contact number [PHONE]. CNIC [CNIC].",
+  "urgent_terms": ["bleeding"],
+  "decision": "REFER",
+  "reasons": ["note mentions: bleeding"],
+  "disclaimer": "Decision support only; a qualified human decides."
+}
+```
+
+Both phone number and CNIC masking were successfully verified. The API also detected the urgent term and returned the `REFER` decision.
 
 ## API Key Authentication
 
@@ -336,23 +381,66 @@ The API key is kept private and is not stored in this repository.
 
 ## API Documentation
 
-- **Local API & Swagger Documentation::** http://127.0.0.1:8000/docs
-- **Health Check:** http://127.0.0.1:8000/docs#/default/health_health_get
+- **Local API and Swagger Documentation:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+- **Health Check:** [http://127.0.0.1:8000/health](http://127.0.0.1:8000/health)
 
 The API currently runs locally and is not publicly deployed.
 
-The Week 8 project converts the Week 6 trained model into a FastAPI web service.
+Project files: [View Week 8 API Project](./Week8_API/)
 
-Project files: "View Week 8 API Project" (./Week8_API/)
+The Week 8 project folder contains the FastAPI application, automated tests, latency benchmark, and sample image. The trained model file is required locally but is not included in the repository.
 
-Includes:
+## Check Your Understanding
 
-- FastAPI application
-- Automated API tests
-- Latency benchmark
-- Trained Week 6 model
-- Sample image
-  
+### 1. What happens if a PDF is uploaded to `/predict`? Why is the response not HTTP 500?
+
+The API returns **415 Unsupported Media Type** because the endpoint accepts JPEG and PNG images only. It is an expected client input error, not an internal server failure.
+
+### 2. Why is the model loaded in the lifespan function instead of inside the endpoint?
+
+The lifespan function loads the model once when the application starts. This avoids repeatedly loading the model for every request, saving time and resources.
+
+### 3. What do p50 = 40 ms and p95 = 400 ms mean?
+
+- **p50:** 50% of requests complete within 40 ms.
+- **p95:** 95% of requests complete within 400 ms.
+
+The difference indicates that some requests take considerably longer than the median.
+
+### 4. How many workers are needed for 500,000 requests/day, a peak 5 times the average, and 25 requests/second per worker?
+
+Average request rate:
+
+500,000 ÷ 86,400 = approximately 5.79 requests/second.
+
+Peak request rate:
+
+5.79 × 5 = approximately 28.94 requests/second.
+
+Workers required:
+
+28.94 ÷ 25 = 1.16.
+
+Therefore, at least **2 workers** are needed based on the given capacity assumption.
+
+### 5. Why can inference inside an async endpoint slow other requests?
+
+CPU-intensive inference can block the event loop, preventing other asynchronous requests from being handled efficiently. Using `run_in_threadpool()` moves the blocking inference work to a worker thread.
+
+### 6. How many communication channels are possible in a four-person team?
+
+The number of communication channels is:
+
+n(n − 1) ÷ 2
+
+For four people:
+
+4 × 3 ÷ 2 = **6 communication channels**.
+
 ## Conclusion
 
-The Week 6 skin lesion classification model was successfully integrated into a FastAPI application. All eight automated tests passed, manual endpoint testing was successful, and the latency benchmark was completed. API-key authentication and input validation were also tested successfully.
+The Week 6 skin lesion classification model was successfully integrated into a FastAPI application. All eight automated tests passed, manual endpoint testing was successful, and the latency benchmark was completed.
+
+API-key authentication, input validation, HTTP 415 and 413 error handling, and PII masking were also tested successfully.
+
+The API currently operates locally and demonstrates how a trained machine learning model can be converted into a testable web service.
