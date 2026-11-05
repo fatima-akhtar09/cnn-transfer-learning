@@ -288,37 +288,30 @@ The API was tested using 50 consecutive requests on one worker.
 - **Operating System:** Windows
 - **Execution:** CPU-based PyTorch
 
-## Little's Law Calculation
+ ## Little's Law Calculation
 
 Little's Law:
 
-\[
-L = \lambda W
-\]
+**L = λ × W**
 
-At a p50 latency of 228 ms:
+At a p50 latency of 228 ms (0.228 seconds):
 
-Theoretical throughput:
+**Theoretical throughput:**
 
-\[
-\lambda = \frac{1}{0.228} \approx 4.39
-\]
+1 ÷ 0.228 = 4.39 requests/second
 
-Theoretical daily request capacity:
+**Theoretical daily request capacity:**
 
-\[
-4.39 \times 86,400 \approx 378,947
-\]
+4.39 × 86,400 = approximately **378,947 requests/day**
 
-Therefore, one worker could theoretically handle approximately **378,947 requests per day** at p50 latency under continuous operation, assuming one request in service at a time.
+Therefore, one worker could theoretically handle approximately 378,947 requests per day at p50 latency under continuous operation, assuming one request in service at a time.
 
-Based on the measured throughput of 3.6 requests per second:
+Based on the measured throughput of 3.6 requests/second:
 
-\[
-3.6 \times 86,400 = 311,040
-\]
+3.6 × 86,400 = **311,040 requests/day**
 
-This gives a measured-throughput daily equivalent of approximately **311,040 requests**, assuming continuous operation. Actual capacity depends on workload and system conditions.
+This is the measured-throughput daily equivalent, assuming continuous operation. Actual capacity depends on workload and system conditions.
+ 
 
 ## Additional Invalid Input Test
 
