@@ -334,6 +334,14 @@ I enabled API-key authentication and tested both cases:
 
 The API key is kept private and is not stored in this repository.
 
+## API Documentation
+
+- **Local API:** http://127.0.0.1:8000
+- **Swagger Documentation:** http://127.0.0.1:8000/docs
+- **Health Check:** http://127.0.0.1:8000/health
+
+The API currently runs locally and is not publicly deployed.
+
 ## Conclusion
 
 The Week 6 skin lesion classification model was successfully integrated into a FastAPI application. All eight automated tests passed, manual endpoint testing was successful, and the latency benchmark was completed. API-key authentication and input validation were also tested successfully.
