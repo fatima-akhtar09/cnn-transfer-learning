@@ -419,6 +419,17 @@ Project files: [View Week 8 API Project](./Week8_API/)
 
 The Week 8 project folder contains the FastAPI application, automated tests, latency benchmark, and sample image. The trained model file is required locally but is not included in the repository.
 
+### Public API Demo (Temporary)
+
+A temporary public demo of the FastAPI application is available through Cloudflare Quick Tunnel.
+
+- **Swagger UI:** https://advertisers-wireless-ratios-coastal.trycloudflare.com/docs
+- **Health Check:** https://advertisers-wireless-ratios-coastal.trycloudflare.com/health
+
+**Note:** This is a temporary public URL. The API is hosted locally on the developer's machine and exposed through Cloudflare Tunnel. It is accessible only while the local FastAPI server, Cloudflare Tunnel, and computer remain running and connected to the internet. The tunnel URL may change when restarted.
+
+The local deployment remains the primary deployment for this project.
+
 ## Check Your Understanding
 
 ### 1. What happens if a PDF is uploaded to `/predict`? Why is the response not HTTP 500?
