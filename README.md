@@ -228,7 +228,7 @@ The service includes input validation, error handling, PII masking, and API-key 
 | `test_api.py` | Automated tests for API functionality and input validation |
 | `bench.py` | Latency benchmarking script |
 | `sample.jpeg` | Sample image used for API testing |
-| `week6_model.pt` | Trained Week 6 model, required locally but not included in GitHub due to file size |
+| `week6_model.pt` | Trained Week 6 model included in the GitHub repository |
 
 **Note:** Place `week6_model.pt` in the same directory as `app.py` before running the API.
 
